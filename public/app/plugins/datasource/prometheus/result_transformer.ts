@@ -16,7 +16,7 @@ export class ResultTransformer {
           options.valueWithRefId
         ),
       ];
-    } else if (options.format === 'heatmap') {
+    } else if (prometheusResult && options.format === 'heatmap') {
       let seriesList = [];
       prometheusResult.sort(sortSeriesByLabel);
       for (const metricData of prometheusResult) {
@@ -24,7 +24,7 @@ export class ResultTransformer {
       }
       seriesList = this.transformToHistogramOverTime(seriesList);
       return seriesList;
-    } else {
+    } else if (prometheusResult) {
       const seriesList = [];
       for (const metricData of prometheusResult) {
         if (response.data.data.resultType === 'matrix') {
@@ -82,7 +82,7 @@ export class ResultTransformer {
     let i, j;
     const metricLabels = {};
 
-    if (md.length === 0) {
+    if (!md || md.length === 0) {
       return table;
     }
 
@@ -100,7 +100,7 @@ export class ResultTransformer {
     table.columns.push({ text: 'Time', type: 'time' });
     _.each(sortedLabels, (label, labelIndex) => {
       metricLabels[label] = labelIndex + 1;
-      table.columns.push({ text: label, filterable: !label.startsWith('__') });
+      table.columns.push({ text: label, filterable: true });
     });
     const valueText = resultCount > 1 || valueWithRefId ? `Value #${refId}` : 'Value';
     table.columns.push({ text: valueText });

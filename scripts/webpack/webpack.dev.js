@@ -58,25 +58,6 @@ module.exports = merge(common, {
     ]
   },
 
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        manifest: {
-          chunks: "initial",
-          test: "vendor",
-          name: "vendor",
-          enforce: true
-        },
-        vendor: {
-          chunks: "initial",
-          test: "vendor",
-          name: "vendor",
-          enforce: true
-        }
-      }
-    }
-  },
-
   plugins: [
     new CleanWebpackPlugin('../../public/build', { allowExternal: true }),
     new MiniCssExtractPlugin({
@@ -85,7 +66,7 @@ module.exports = merge(common, {
     new HtmlWebpackPlugin({
       filename: path.resolve(__dirname, '../../public/views/error.html'),
       template: path.resolve(__dirname, '../../public/views/error-template.html'),
-      inject: 'false',
+      inject: false,
     }),
     new HtmlWebpackPlugin({
       filename: path.resolve(__dirname, '../../public/views/index.html'),
